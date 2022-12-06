@@ -258,7 +258,7 @@ class Teilnehmer
 
     public function setNachricht($nachricht)
     {
-        $this->nachrichht = $nachricht;
+        $this->nachricht = $nachricht;
     }
 
     public function getTimestamp()
@@ -287,15 +287,15 @@ class Teilnehmer
         return $abfrage->fetchAll();
     }
 
-    public static function finde()
+    public static function fetch($id)
     {
-        $sql = 'SELECT * FROM tn_data WHERE ventoux = ? OR br1 = ? OR br2 = ? OR boe1 = ? OR boe2 = ? OR vog = ? OR  bod = ? OR  jura = ? ORDER BY id ';
-        //$sql = 'SELECT * FROM tn_data WHERE ventoux = ? OR br1 = ?';
+        //$sql = 'SELECT * FROM tn_data WHERE ventoux = ? OR br1 = ? OR br2 = ? OR boe1 = ? OR boe2 = ? OR vog = ? OR  bod = ? OR  jura = ? ORDER BY id ';
+        $sql = 'SELECT * FROM tn_data WHERE id = ?' ;
         $abfrage = self::$pdo->prepare($sql);
-        $abfrage->execute(array(2,2,2,2,2,2,2,2));
+        $abfrage->execute([$id]);
         $abfrage->setFetchMode(PDO::FETCH_CLASS, 'Teilnehmer');
 
-        return $abfrage->fetchAll();
+        return $abfrage->fetch();
     }
 
     public static function lastUpdate()
@@ -306,6 +306,16 @@ class Teilnehmer
         $abfrage->setFetchMode(PDO::FETCH_CLASS, 'Teilnehmer');
 
         return $abfrage->fetch();
+    }
+
+    public static function fetchAllTn()
+    {
+        $sql = 'SELECT * FROM tn_data WHERE ventoux > ? OR br1 > ? OR br2 > ? OR boe1 > ? OR boe2 > ? OR vog > ? OR bod > ? OR jura > ? ORDER BY nname';
+        $abfrage = self::$pdo->prepare($sql);
+        $abfrage->execute(array(0, 0, 0, 0, 0, 0, 0, 0));
+        $abfrage->setFetchMode(PDO::FETCH_CLASS, 'Teilnehmer');
+
+        return $abfrage->fetchAll();
     }
 
     public function speichere()
@@ -319,9 +329,9 @@ class Teilnehmer
         }
     }
 
-    protected function update()
+    /*protected function updateTn()
     {   global $ts;
-        $sql = 'UPDATE tn_data SET id = :id,  vname = :vname, ventoux = :ventoux, br1 = :br1, br2 = :br2, boe1 = :boe1, boe2 = :boe2, vog = :vog, bod = :bod, jura = :jura, med200 = :med200, med300 = :med300, med400 = :med400, med600 = :med600, timestamp = :timestamp WHERE id = :id';
+        $sql = 'UPDATE tn_data SET ventoux = :ventoux, br1 = :br1, br2 = :br2, boe1 = :boe1, boe2 = :boe2, vog = :vog, bod = :bod, jura = :jura timestamp = :timestamp WHERE id = :id';
         $abfrage = self::$pdo->prepare($sql);
         $data = (get_object_vars($this));
         echo "<br>Rohdaten Update:<br> ";
@@ -330,15 +340,28 @@ class Teilnehmer
         echo "<br>Daten Update bereinigt:<br> ";
         print_r($data);
         $abfrage->execute($data);
-    }
+    }*/
 
-    public function loesche()
-    {
+    public function updateTn($id, $brevet, $checked, $current_time)
+        {   
+            $sql = 'UPDATE tn_data SET '.$brevet.' = ?, timestamp = ? WHERE id = "'.$this->getId().'"';
+            $statement = self::$pdo->prepare($sql);
+            $statement->execute(array($checked, $current_time));
+        }
+
+    public function deleteTn()
+    {   global $delete;
         $sql = 'DELETE FROM tn_data WHERE id = ?';
         $abfrage = self::$pdo->prepare($sql);
-        $abfrage->execute([$this->getId()]);
-
-        $this->id = 0;
+        if($abfrage->execute([$this->getId()]))
+        {
+        //$this->id = 0;
+        }
+        else {
+            echo "SQL Error <br />";
+            echo $abfrage->queryString."<br />";
+            echo $abfrage->errorInfo()[2];
+            }
     }
 
     public function showAll()
@@ -355,6 +378,90 @@ class Teilnehmer
       {
         echo "<td>".$items."</td>";
       }
+    }
+
+    public function showButtonVentoux()
+    {
+        if(empty($this->getVentoux()) || $this->getVentoux()  == 3) {echo 'class="td_0" value="1">&nbsp; ';}   
+        elseif($this->getVentoux() == 1) {echo 'class="td_0" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonBr1()
+    {
+        if(empty($this->getBr1()) || $this->getBr1()  == 3) {echo 'class="td_1" value="1">&nbsp; ';}   
+        elseif($this->getBr1() == 1) {echo 'class="td_1" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonBr2()
+    {
+        if(empty($this->getBr2()) || $this->getBr2()  == 3) {echo 'class="td_1" value="1">&nbsp; ';}   
+        elseif($this->getBr1() == 1) {echo 'class="td_1" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonBoe1()
+    {
+        if(empty($this->getBoe1()) || $this->getBoe1()  == 3) {echo 'class="td_0" value="1">&nbsp; ';}   
+        elseif($this->getBoe1() == 1) {echo 'class="td_0" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonBoe2()
+    {
+        if(empty($this->getBoe2()) || $this->getBoe2()  == 3) {echo 'class="td_0" value="1">&nbsp; ';}   
+        elseif($this->getBoe2() == 1) {echo 'class="td_0" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonVog()
+    {
+        if(empty($this->getVog()) || $this->getVog()  == 3) {echo 'class="td_1" value="1">&nbsp; ';}   
+        elseif($this->getVog() == 1) {echo 'class="td_1" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonBod()
+    {
+        if(empty($this->getBod()) || $this->getBod()  == 3) {echo 'class="td_1" value="1">&nbsp; ';}   
+        elseif($this->getBod() == 1) {echo 'class="td_1" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonJura()
+    {
+        if(empty($this->getJura()) || $this->getJura()  == 3) {echo 'class="td_0" value="1">&nbsp; ';}   
+        elseif($this->getJura() == 1) {echo 'class="td_0" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonMed200()
+    {
+        if(empty($this->getMed200()) || $this->getMed200()  == 3) {echo 'class="td_1" value="1">&nbsp; ';}   
+        elseif($this->getMed200() == 1) {echo 'class="td_1" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonMed300()
+    {
+        if(empty($this->getMed300()) || $this->getMed300()  == 3) {echo 'class="td_0" value="1">&nbsp; ';}   
+        elseif($this->getMed300() == 1) {echo 'class="td_0" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonMed400()
+    {
+        if(empty($this->getMed400()) || $this->getMed400()  == 3) {echo 'class="td_1" value="1">&nbsp; ';}   
+        elseif($this->getMed400() == 1) {echo 'class="td_1" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
+    }
+
+    public function showButtonMed600()
+    {
+        if(empty($this->getMed600()) || $this->getMed600()  == 3) {echo 'class="td_0" value="1">&nbsp; ';}   
+        elseif($this->getMed600() == 1) {echo 'class="td_0" value="2">?' ;}
+        else {echo 'class="td_8" value="3">&#10004;';}
     }
     /* **** Geschuetzte Methoden **** */
 
