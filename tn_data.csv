@@ -1,0 +1,9 @@
+id,vname,nname,str_hn,plz,ort,land,email,telefon,ventoux,br1,br2,boe1,boe2,bod,vog,jura,med200,med300,med400,med600,nachricht,timestamp
+1806,Theresa,May,Oratione,1,Oratione,Bouvetinsel,mail@viavelo.de,+1 212-333-4444,1,NULL,2,1,1,2,NULL,NULL,NULL,1,1,1,Oratione,1669636747
+1808,Franz,Liszt,Dixisset,1,Oratione,Spanien,mail@walter-jungwirth.de,+1 212-333-4444,1,NULL,2,NULL,1,1,1,NULL,2,2,1,NULL,Oratione,1669636750
+1810,John,Bach,Bachweg,999,Loremipsum,Neukaledonien,freiburg@ara-breisgau.de,+1 212-333-4444,2,NULL,1,NULL,1,1,1,1,1,1,1,2,Loremipsum,1669636751
+1811,Franz,Schubert,Oratione,10,Loremipsum,Marokko,mail@viavelo.de,+1 718-555-6666,NULL,1,2,NULL,2,NULL,NULL,1,1,NULL,1,1,Loremipsum,1669636744
+1807,Fritz,Loremipsum,Oratione,1,Oratione,Bouvetinsel,mail@viavelo.de,+1 212-333-4444,1,NULL,2,1,1,2,NULL,NULL,NULL,1,2,1,Oratione,1669636747
+1809,Franz,Liszt,Dixisset,1,Oratione,Spanien,mail@walter-jungwirth.de,+1 212-333-4444,1,NULL,2,NULL,1,1,1,NULL,1,1,1,NULL,Oratione,1669636750
+1812,Sebi,Bach,Bachweg,999,Loremipsum,Neukaledonien,freiburg@ara-breisgau.de,+1 212-333-4444,2,NULL,1,NULL,1,1,1,1,1,1,1,1,Loremipsum,1669636751
+1813,Norbert,Schumann,Oratione,10,Loremipsum,Marokko,mail@viavelo.de,+1 718-555-6666,NULL,1,2,NULL,2,NULL,NULL,1,1,NULL,1,1,Loremipsum,1669636744
