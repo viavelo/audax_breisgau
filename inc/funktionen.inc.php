@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 function bereinige($benutzerEingabe, $encoding = 'UTF-8')
 {
     return htmlspecialchars(
