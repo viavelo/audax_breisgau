@@ -34,13 +34,11 @@ if(!empty($_POST['delete'])) {
 if(!empty($checked) &&!empty($brevet) && !empty($tn_id)) 
     {
         $id = $tn->setId($_POST['tn_id']);  
-        //$_SESSION['id'] = $_POST['tn_id'];
         $tn->updateTn($id, $brevet, $checked, $current_time);
     }
 
 $result[] = $tn->fetchAllTn();
 
-//$type = array('getVentoux'=>'ventoux', 'getBr1' => 'br1', 'getBr2' =>  'br2', 'getBoe1' =>  'boe1', 'getBoe2' =>  'boe2', 'getVog' => 'vog', 'getBod' => 'bod', 'getJura' => 'jura');
 
 foreach($result AS $r)
 {
